@@ -62,5 +62,3 @@ def tree(UsingSession=IoTtalk):
     r = UsingSession.get(ENDPOINT + '/tree')
     if r.status_code != 200: raise CSMError(r.text)
     return r.json()
-
-	
