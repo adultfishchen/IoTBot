@@ -61,24 +61,41 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
 
-    elif event.message.text.lower() == "push":
-        IDF_data = random.uniform(1, 10)
-        DAN.push('Status', int(IDF_data))  # Push data
-        event.message.text = event.message.text+" "+ str(IDF_data)
-        message = event.message.text
-        line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text=message))
+    # elif event.message.text.lower() == "push":
+    #     IDF_data = random.uniform(1, 10)
+    #     DAN.push('Status', int(IDF_data))  # Push data
+    #     event.message.text = event.message.text+" "+ str(IDF_data)
+    #     message = event.message.text
+    #     line_bot_api.reply_message(
+    #             event.reply_token, TextSendMessage(text=message))
 
-    elif event.message.text.lower() == "pull":
-        ODF_data = DAN.pull('Name-O')  # Pull data
-        if ODF_data != None:
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text=str(ODF_data[0])))
+    # elif event.message.text.lower() == "pull":
+    #     ODF_data = DAN.pull('Name-O')  # Pull data
+    #     if ODF_data != None:
+    #         line_bot_api.reply_message(
+    #             event.reply_token, TextSendMessage(text=str(ODF_data[0])))
 
     else:
         message = event.message.text
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
+def receive():
+	while True:
+		id = DAN.pull ('Name-O') #list
+		# record
+		if id != None:
+			washM_dict['w0'] = int(id[0])
+			washM_dict['w1'] = int(id[0])
+			washM_dict['w2'] = int(id[0])
+
+			print(washM_dict['w0'])
+
+		time.sleep(1)
+def send():
+	while True:
+		IDF_data = random.uniform(1, 10)
+		DAN.push ('Status', int(IDF_data))
+		time.sleep(1)
 
 if __name__ == "__main__":
 
@@ -110,6 +127,6 @@ if __name__ == "__main__":
     t1 = threading.Thread(target=send)
     t1.daemon = True     # this ensures thread ends when main process ends
     t1.start()
-    
+
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
