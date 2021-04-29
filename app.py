@@ -100,7 +100,8 @@ def send():
 if __name__ == "__main__":
 
     # connect to IoTtalk server
-    ServerURL = 'http://140.114.77.75:9999/'
+    # ServerURL = 'http://140.114.77.75:9999/'
+    ServerURL = 'https://demo.iottalk.tw'
     Reg_addr = None
 
     # Define your IoTtalk Device
