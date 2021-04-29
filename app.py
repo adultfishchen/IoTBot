@@ -79,7 +79,7 @@ def handle_message(event):
         message = event.message.text
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
-            
+
 if __name__ == "__main__":
 
     # connect to IoTtalk server
@@ -98,6 +98,18 @@ if __name__ == "__main__":
     # Deregister
     # DAN.deregister()
     # exit()
+    # you can write a generator to random sensor data and then push to the IoTtalk
+	# maybe use thread
 
+	# you can create a thread function to pull the data from the IoTtalk
+
+    t = threading.Thread(target=receive)
+    t.daemon = True     # this ensures thread ends when main process ends
+    t.start()
+
+    t1 = threading.Thread(target=send)
+    t1.daemon = True     # this ensures thread ends when main process ends
+    t1.start()
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

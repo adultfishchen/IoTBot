@@ -1,7 +1,5 @@
-import time, random, threading, requests
-import csmapi
+import requests, time, csmapi, random, threading 
 
-# example
 profile = {
     'd_name': None,
     'dm_name': None,
@@ -31,8 +29,7 @@ def ControlChannel():
                     csmapi.push(MAC,'__Ctl_I__',['SET_DF_STATUS_RSP',{'cmd_params':CH[0][1][1]['cmd_params']}], NewSession)
                     DF_STATUS = list(CH[0][1][1]['cmd_params'][0])
                     SelectedDF = []
-                    index=0 
-                               
+                    index=0            
                     for STATUS in DF_STATUS:
                         if STATUS == '1':
                             SelectedDF.append(profile['df_list'][index])

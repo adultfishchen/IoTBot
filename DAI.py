@@ -1,12 +1,15 @@
 import time, random, requests
 import DAN
 
-ServerURL = 'https://demo.iottalk.tw/'      #with non-secure connection
+# ServerURL = 'http://demo.iottalk.tw:9999'      #with non-secure connection
+ServerURL = 'http://140.114.77.75:9999/'
 # ServerURL = 'https://demo.iottalk.tw' #with SSL connection
 Reg_addr = None #if None, Reg_addr = MAC address
 
-DAN.profile['dm_name']='Remote_control'
-DAN.profile['df_list']=['Knob1', 'Luminance']
+# DAN.profile['dm_name']='Wash'
+# DAN.profile['df_list']=['Status', 'Name-O']
+DAN.profile['dm_name']='Dummy_Device'
+DAN.profile['df_list']=['Dummy_Sensor', 'Dummy_Control']
 #DAN.profile['d_name']= 'Assign a Device Name' 
 
 DAN.device_registration_with_retry(ServerURL, Reg_addr)
@@ -16,11 +19,12 @@ DAN.device_registration_with_retry(ServerURL, Reg_addr)
 while True:
     try:
         IDF_data = random.uniform(1, 10)
-        DAN.push ('Knob1', int(IDF_data)) #Push data to an input device feature "Dummy_Sensor"
-
+        # DAN.push ('Status', int(IDF_data)) #Push data to an input device feature "Dummy_Sensor"
+        DAN.push ('Dummy_Sensor', int(IDF_data))
         #==================================
 
-        ODF_data = DAN.pull('Luminance')#Pull data from an output device feature "Dummy_Control"
+        # ODF_data = DAN.pull('Name-O')#Pull data from an output device feature "Dummy_Control"
+        ODF_data = DAN.pull('Dummy_Control')
         if ODF_data != None:
             print (ODF_data[0])
 
