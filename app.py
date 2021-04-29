@@ -91,8 +91,7 @@ def handle_message(event):
 	# you can wrtie some codes here to handle the message sent by users
 	cmd = event.message.text
 	if cmd is '1':
-        receive()
-        S = washM_dict['w0']
+        S = DAN.profile['d_name']
         reply = event.message.text + "這台機器狀態為" + str(S)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 	else:
