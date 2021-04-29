@@ -60,13 +60,13 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
 
-    # elif event.message.text.lower() == "push":
-    #     IDF_data = random.uniform(1, 10)
-    #     DAN.push('Status', int(IDF_data))  # Push data
-    #     event.message.text = event.message.text+" "+ str(IDF_data)
-    #     message = event.message.text
-    #     line_bot_api.reply_message(
-    #             event.reply_token, TextSendMessage(text=message))
+    elif event.message.text.lower() == "push":
+        IDF_data = random.uniform(1, 10)
+        DAN.push('Status', int(IDF_data))  # Push data
+        event.message.text = event.message.text+" "+ str(IDF_data)
+        message = event.message.text
+        line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text=message))
 
     elif event.message.text.lower() == "pull":
         ODF_data = DAN.pull('Name-O')  # Pull data
