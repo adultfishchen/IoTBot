@@ -47,12 +47,10 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text.lower() == "register":
-        S = washM_dict['w0']
-        reply = event.message.text + "這台機器狀態為" + str(S)
-        # event.message.text = event.message.text+" "+DAN.profile['d_name']
-        # message = event.message.text
+        event.message.text = event.message.text+" "+DAN.profile['d_name']
+        message = event.message.text
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=reply))
+            event.reply_token, TextSendMessage(text=message))
         # line_bot_api.reply_message(
         #     event.reply_token, TextSendMessage(text=event.message.text))
             
@@ -71,11 +69,10 @@ def handle_message(event):
     #             event.reply_token, TextSendMessage(text=message))
 
     elif event.message.text.lower() == "pull":
-    #     ODF_data = DAN.pull('Name-O')  # Pull data
-    #     if ODF_data != None:
-        S = str(washM_dict['w0'])
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=S))
+        ODF_data = DAN.pull('Name-O')  # Pull data
+        if ODF_data != None:
+            line_bot_api.reply_message(
+                event.reply_token, TextSendMessage(text=str(ODF_data[0])))
 
     else:
         message = event.message.text
