@@ -128,5 +128,7 @@ if __name__ == "__main__":
     t1.daemon = True     # this ensures thread ends when main process ends
     t1.start()
 
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port,threaded=True)
+    # port = int(os.environ.get('PORT', 5000))
+    # app.run(host='0.0.0.0', port=port,threaded=True)
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
