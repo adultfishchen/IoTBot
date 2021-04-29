@@ -47,11 +47,12 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text.lower() == "register":
-
-        event.message.text = event.message.text+" "+DAN.profile['d_name']
-        message = event.message.text
+        S = washM_dict['w0']
+        reply = event.message.text + "這台機器狀態為" + str(S)
+        # event.message.text = event.message.text+" "+DAN.profile['d_name']
+        # message = event.message.text
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=message))
+            event.reply_token, TextSendMessage(text=reply))
         # line_bot_api.reply_message(
         #     event.reply_token, TextSendMessage(text=event.message.text))
             
@@ -69,16 +70,18 @@ def handle_message(event):
     #     line_bot_api.reply_message(
     #             event.reply_token, TextSendMessage(text=message))
 
-    # elif event.message.text.lower() == "pull":
+    elif event.message.text.lower() == "pull":
     #     ODF_data = DAN.pull('Name-O')  # Pull data
     #     if ODF_data != None:
-    #         line_bot_api.reply_message(
-    #             event.reply_token, TextSendMessage(text=str(ODF_data[0])))
+        S = str(washM_dict['w0'])
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=S))
 
     else:
         message = event.message.text
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=message))
+
 def receive():
 	while True:
 		id = DAN.pull ('Name-O') #list
