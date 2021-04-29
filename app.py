@@ -85,42 +85,65 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event)
-    text=event.message.text
+	message = TextSendMessage(text=event.message.text)
+	# line_bot_api.reply_message(event.reply_token, message)
 
-    if (text=="Hi"):
-        reply_text = "Hello"
-        #Your user ID
+	# you can wrtie some codes here to handle the message sent by users
+	cmd = event.message.text
+	if cmd is '1':
+		S = washM_dict['w0']
+		reply = event.message.text + "這台機器狀態為" + str(S)
+		line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
+	else:
+		reply = "不是指令"
+		line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
-    elif(text=="你好"):
-        reply_text = "哈囉"
-    elif(text=="機器人"):
-        reply_text = "叫我嗎"
-    else:
-        reply_text = text
-#如果非以上的選項，就會學你說話
-    message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, message)
+def receive():
+	while True:
+		id = DAN.pull ('Name-O') #list
+		# record
+		if id != None:
+			washM_dict['w0'] = int(id[0])
+			washM_dict['w1'] = int(id[0])
+			washM_dict['w2'] = int(id[0])
 
-# if __name__ == "__main__":
+			print(washM_dict['w0'])
 
-    # # connect to IoTtalk server
-    # ServerURL = 'http://140.114.77.75:9999/'
-    # Reg_addr = None
+		time.sleep(1)
+def send():
+	while True:
+		IDF_data = random.uniform(1, 10)
+		DAN.push ('Status', int(IDF_data))
+		time.sleep(1)
 
-    # # Define your IoTtalk Device
-    # DAN.profile['dm_name'] = 'Remote_control'
-    # DAN.profile['df_list'] = ['Knob1', 'Luminance', ]
-
-    # # Register
-    # DAN.device_registration_with_retry(ServerURL, Reg_addr)
-
-    # # Deregister
-    # DAN.deregister()
-    # exit()
-
+import os
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
-    # port = int(os.environ.get('PORT', 8000))
-    # app.run(host='0.0.0.0', port=port)
+
+	ServerURL = 'http://140.114.77.73:9999' #with no secure connection
+	Reg_addr = None #if None, Reg_addr = MAC address
+
+	# Define your IoTtalk Device
+	#DAN.profile['dm_name']=???
+	#DAN.profile['df_list']=???
+	#DAN.profile['d_name']= ???
+	DAN.profile['dm_name']='Wash'
+	DAN.profile['df_list']=['Status','Name-O']
+
+	# Register 
+	DAN.device_registration_with_retry(ServerURL, Reg_addr)
+
+	# you can write a generator to random sensor data and then push to the IoTtalk
+	# maybe use thread
+
+	# you can create a thread function to pull the data from the IoTtalk
+
+	t = threading.Thread(target=receive)
+	t.daemon = True     # this ensures thread ends when main process ends
+	t.start()
+
+	t1 = threading.Thread(target=send)
+	t1.daemon = True     # this ensures thread ends when main process ends
+	t1.start()
+
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port)
