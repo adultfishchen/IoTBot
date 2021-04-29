@@ -91,9 +91,10 @@ def handle_message(event):
 	# you can wrtie some codes here to handle the message sent by users
 	cmd = event.message.text
 	if cmd is '1':
-		S = washM_dict['w0']
-		reply = event.message.text + "這台機器狀態為" + str(S)
-		line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
+        receive()
+        S = washM_dict['w0']
+        reply = event.message.text + "這台機器狀態為" + str(S)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 	else:
 		reply = "不是指令"
 		line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
@@ -116,7 +117,6 @@ def send():
 		DAN.push ('Status', int(IDF_data))
 		time.sleep(1)
 
-import os
 if __name__ == "__main__":
 
 	ServerURL = 'http://140.114.77.73:9999' #with no secure connection
